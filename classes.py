@@ -11,8 +11,12 @@ class main_window():
     def init_ui(self):
         self.tab_control = ttk.Notebook(self.app)
         self.tab_model = ttk.Frame(self.tab_control)
+        self.tab_plant = ttk.Frame(self.tab_control)
+        self.tab_controller = ttk.Frame(self.tab_control)
         self.tab_parameters = ttk.Frame(self.tab_control)
         self.tab_control.add(self.tab_model, text='Modeling')
+        self.tab_control.add(self.tab_plant, text='Plant')
+        self.tab_control.add(self.tab_controller, text='Controller')
         self.tab_control.add(self.tab_parameters, text='Parameters')
         self.tab_control.pack(expand=1, fill='both')
         
