@@ -83,3 +83,9 @@ class main_window():
         self.btn_save_controller = tk.Button(self.tab_controller, text='Save')
         self.btn_save_controller.grid(row=1, column=0, sticky='we', padx=10)
 
+        # Plant tab
+        self.txt_plant = scrolledtext.ScrolledText(self.tab_plant, width=45, height=20)
+        self.txt_plant.grid(row=0, column=0, sticky='we', padx=10, pady=10)
+        self.btn_save_plant = tk.Button(self.tab_plant, text='Save')
+        self.btn_save_plant.grid(row=1, column=0, sticky='we', padx=10)
+
