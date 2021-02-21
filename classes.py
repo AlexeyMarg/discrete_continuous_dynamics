@@ -1,5 +1,6 @@
 import tkinter as tk
 import tkinter.ttk as ttk
+from tkinter import  scrolledtext
 
 class main_window():
     def __init__(self, app):
@@ -76,5 +77,9 @@ class main_window():
         self.btn_save_parameters = tk.Button(self.tab_parameters, text='Save')
         self.btn_save_parameters.grid(row=7, column=0, columnspan=3, sticky='we', padx=10, pady=10)
 
-
+        # Controller tab
+        self.txt_controller = scrolledtext.ScrolledText(self.tab_controller, width=45, height=20)
+        self.txt_controller.grid(row=0, column=0, sticky='we', padx=10, pady=10)
+        self.btn_save_controller = tk.Button(self.tab_controller, text='Save')
+        self.btn_save_controller.grid(row=1, column=0, sticky='we', padx=10)
 
