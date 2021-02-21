@@ -6,7 +6,7 @@ class main_window():
     def __init__(self, app):
         self.app = app
         self.app.title('Continuous plant with discrete controller')
-        self.app.geometry('400x400')
+        self.app.geometry('400x500')
         self.init_ui()
 
     def init_ui(self):
@@ -82,10 +82,14 @@ class main_window():
         self.txt_controller.grid(row=0, column=0, sticky='we', padx=10, pady=10)
         self.btn_save_controller = tk.Button(self.tab_controller, text='Save')
         self.btn_save_controller.grid(row=1, column=0, sticky='we', padx=10)
+        self.btn_reset_controller = tk.Button(self.tab_controller, text='Reset')
+        self.btn_reset_controller.grid(row=2, column=0, sticky='we', padx=10, pady=10)
 
         # Plant tab
         self.txt_plant = scrolledtext.ScrolledText(self.tab_plant, width=45, height=20)
         self.txt_plant.grid(row=0, column=0, sticky='we', padx=10, pady=10)
         self.btn_save_plant = tk.Button(self.tab_plant, text='Save')
         self.btn_save_plant.grid(row=1, column=0, sticky='we', padx=10)
+        self.btn_reset_plant = tk.Button(self.tab_plant, text='Reset')
+        self.btn_reset_plant.grid(row=2, column=0, sticky='we', padx=10, pady=10)
 
