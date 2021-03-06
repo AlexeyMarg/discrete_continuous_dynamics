@@ -1,10 +1,14 @@
-x0
-input_delay
-output_delay
-saturation_control_lower
-saturation_control_upper
-control_quantizing
-output_quantizing
-controller_sample_time
-plant_sample_time
-modeling_time
+x0: 0, 0
+input_delay_status: True
+input_delay: 1
+output_delay_status: True
+output_delay: 2
+saturation_control_lower: -5
+saturation_control_upper: 5
+control_quantizing_status: True
+control_quantizing: 0.1
+output_quantizing_status: True
+output_quantizing: 0.5
+controller_sample_time: 0.1
+plant_sample_time: 0.0001
+modeling_time: 10
