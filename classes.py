@@ -1,6 +1,8 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import scrolledtext
+from PIL import Image, ImageTk
+
 
 class main_window():
     def __init__(self, app):
@@ -16,20 +18,77 @@ class main_window():
         self.x0 = temp[0].split(':')[1].split(',')
         for i in range(len(self.x0)):
             self.x0[i] = float(self.x0[i])
-        self.input_delay_status = temp[1].split()[1]
+        if temp[1].split()[1] == 'True':
+            self.input_delay_status = True
+        else:
+            self.input_delay_status = False
         self.input_delay = float(temp[2].split()[1])
-        self.output_delay_status = temp[3].split()[1]
+        if temp[3].split()[1] == 'True':
+            self.output_delay_status = True
+        else:
+            self.output_delay_status = False
         self.output_delay = float(temp[4].split()[1])
         self.saturation_input_lower = float(temp[5].split()[1])
         self.saturation_input_upper = float(temp[6].split()[1])
-        self.input_quantizing_status = temp[7].split()[1]
+        if temp[7].split()[1] == 'True':
+            self.input_quantizing_status = True
+        else:
+            self.input_quantizing_status = False
         self.input_quantizing = float(temp[8].split()[1])
-        self.output_quantizing_status = temp[9].split()[1]
+        if temp[9].split()[1] == 'True':
+            self.output_quantizing_status = True
+        else:
+            self.output_quantizing_status = False
         self.output_quantizing = float(temp[10].split()[1])
         self.controller_sample_time = float(temp[11].split()[1])
         self.plant_sample_time = float(temp[12].split()[1])
         self.modeling_time = float(temp[13].split()[1])
         f.close()
+
+    def redraw_model(self):
+        self.model_cns = tk.Canvas(self.tab_model, width=600, height=400, bg='white')
+        self.model_cns.grid(row=0, column=0)
+        self.model_cns.create_line(10, 50, 70, 50, width=2, arrow='last', arrowshape='5 10 5')
+        self.model_cns.create_oval(70, 40, 90, 60)
+        self.model_cns.create_line(90, 50, 110, 50, width=2, arrow='last', arrowshape='5 10 5')
+        self.model_cns.create_rectangle(110, 30, 180, 70)
+        self.model_cns.create_text(145, 50, text='Controller')
+        self.model_cns.create_line(180, 50, 350, 50, width=2, arrow='last', arrowshape='5 10 5')
+        self.model_cns.create_rectangle(350, 30, 420, 70)
+        self.model_cns.create_text(385, 50, text='Plant')
+        self.model_cns.create_line(420, 50, 480, 50, width=2, arrow='last', arrowshape='5 10 5')
+        self.model_cns.create_line(450, 50, 450, 130, width=2)
+        self.model_cns.create_line(450, 130, 80, 130, width=2)
+        self.model_cns.create_line(80, 130, 80, 60, width=2, arrow='last', arrowshape='5 10 5')
+        self.model_cns.create_text(80, 55, text='-')
+        self.model_cns.create_text(75, 50, text='+')
+        self.model_cns.create_text(40, 35, text='g(t)')
+        self.model_cns.create_text(100, 35, text='e(t)')
+        self.model_cns.create_text(195, 35, text='u(t)')
+        self.model_cns.create_text(435, 35, text='y(t)')
+        #open pics
+        self.img_sat = ImageTk.PhotoImage(Image.open('pics/saturation.png'))
+        self.img_quant = ImageTk.PhotoImage(Image.open('pics/quantizer.png'))
+        self.img_delay = ImageTk.PhotoImage(Image.open('pics/delay.png'))
+        #saturation
+        self.model_cns.create_image(220, 50, image=self.img_sat)
+        self.model_cns.create_text(220, 25, text=str(self.saturation_input_upper))
+        self.model_cns.create_text(220, 75, text=str(self.saturation_input_lower))
+        # input quantizer
+        if self.input_quantizing_status:
+            self.model_cns.create_image(270, 50, image=self.img_quant)
+            self.model_cns.create_text(270, 25, text=str(self.input_quantizing))
+        if self.input_delay_status:
+            self.model_cns.create_image(320, 50, image=self.img_delay)
+            self.model_cns.create_text(320, 25, text=str(self.input_delay))
+        # output quantizer
+        if self.output_quantizing_status:
+            self.model_cns.create_image(310, 130, image=self.img_quant)
+            self.model_cns.create_text(310, 105, text=str(self.output_quantizing))
+        if self.output_delay_status:
+            self.model_cns.create_image(240, 130, image=self.img_delay)
+            self.model_cns.create_text(240, 105, text=str(self.output_delay))
+
 
     def init_ui(self):
         self.tab_control = ttk.Notebook(self.app)
@@ -46,7 +105,7 @@ class main_window():
         self.tab_control.pack(expand=1, fill='both')
 
         # Parameters tab init UI
-        #sample time
+        # sample time
         self.lbl_sample_time = tk.Label(self.tab_parameters, text='Sample time')
         self.lbl_sample_time.grid(row=0, column=0, padx=10)
         self.ent_sample_time = tk.Entry(self.tab_parameters)
@@ -77,7 +136,7 @@ class main_window():
         self.ent_input_delay.grid(row=4, column=1)
         self.ent_input_delay.insert(0, str(self.input_delay))
         self.status_input_delay = tk.BooleanVar()
-        if self.input_delay_status =='True':
+        if self.input_delay_status:
             self.status_input_delay.set(True)
         else:
             self.status_input_delay.set(False)
@@ -90,7 +149,7 @@ class main_window():
         self.ent_output_delay.grid(row=5, column=1)
         self.ent_output_delay.insert(0, str(self.output_delay))
         self.status_output_delay = tk.BooleanVar()
-        if self.output_delay_status == 'True':
+        if self.output_delay_status:
             self.status_output_delay.set(True)
         else:
             self.status_output_delay.set(False)
@@ -103,7 +162,7 @@ class main_window():
         self.ent_input_quant.grid(row=6, column=1)
         self.ent_input_quant.insert(0, str(self.input_quantizing))
         self.status_input_quant = tk.BooleanVar()
-        if self.input_quantizing_status == 'True':
+        if self.input_quantizing_status:
             self.status_input_quant.set(True)
         else:
             self.status_input_quant.set(False)
@@ -116,7 +175,7 @@ class main_window():
         self.ent_output_quant.grid(row=7, column=1)
         self.ent_output_quant.insert(0, str(self.output_quantizing))
         self.status_output_quant = tk.BooleanVar()
-        if self.output_quantizing_status == 'True':
+        if self.output_quantizing_status:
             self.status_output_quant.set(True)
         else:
             self.status_output_quant.set(False)
@@ -141,6 +200,10 @@ class main_window():
         # Controller tab
         self.txt_controller = scrolledtext.ScrolledText(self.tab_controller, width=45, height=20)
         self.txt_controller.grid(row=0, column=0, sticky='we', padx=10, pady=10)
+        f = open('controller.py', 'r')
+        tmp = f.read()
+        self.txt_controller.insert(tk.END, tmp)
+        f.close()
         self.btn_save_controller = tk.Button(self.tab_controller, text='Save')
         self.btn_save_controller.grid(row=1, column=0, sticky='we', padx=10)
         self.btn_reset_controller = tk.Button(self.tab_controller, text='Reset')
@@ -149,37 +212,26 @@ class main_window():
         # Plant tab
         self.txt_plant = scrolledtext.ScrolledText(self.tab_plant, width=45, height=20)
         self.txt_plant.grid(row=0, column=0, sticky='we', padx=10, pady=10)
+        f = open('plant.py', 'r')
+        tmp = f.read()
+        self.txt_plant.insert(tk.END, tmp)
+        f.close()
         self.btn_save_plant = tk.Button(self.tab_plant, text='Save')
         self.btn_save_plant.grid(row=1, column=0, sticky='we', padx=10)
         self.btn_reset_plant = tk.Button(self.tab_plant, text='Reset')
         self.btn_reset_plant.grid(row=2, column=0, sticky='we', padx=10, pady=10)
 
-        #Input tab
+        # Input tab
         self.txt_input = scrolledtext.ScrolledText(self.tab_input, width=45, height=20)
         self.txt_input.grid(row=0, column=0, sticky='we', padx=10, pady=10)
+        f = open('input.py', 'r')
+        tmp = f.read()
+        self.txt_input.insert(tk.END, tmp)
+        f.close()
         self.btn_save_input = tk.Button(self.tab_input, text='Save')
         self.btn_save_input.grid(row=1, column=0, sticky='we', padx=10)
         self.btn_reset_input = tk.Button(self.tab_input, text='Reset')
         self.btn_reset_input.grid(row=2, column=0, sticky='we', padx=10, pady=10)
 
-        #Modeling tab
-        self.model_cns = tk.Canvas(self.tab_model, width=600, height=400, bg='white')
-        self.model_cns.grid(row=0, column=0)
-        self.model_cns.create_line(10, 50, 70, 50, width=2, arrow='last', arrowshape='5 10 5')
-        self.model_cns.create_oval(70, 40, 90, 60)
-        self.model_cns.create_line(90, 50, 110, 50, width=2, arrow='last', arrowshape='5 10 5')
-        self.model_cns.create_rectangle(110, 30, 180, 70)
-        self.model_cns.create_text(145, 50, text='Controller')
-        self.model_cns.create_line(180, 50, 350, 50, width=2, arrow='last', arrowshape='5 10 5')
-        self.model_cns.create_rectangle(350, 30, 420, 70)
-        self.model_cns.create_text(385, 50, text='Plant')
-        self.model_cns.create_line(420, 50, 480, 50, width=2, arrow='last', arrowshape='5 10 5')
-        self.model_cns.create_line(450, 50, 450, 130, width=2)
-        self.model_cns.create_line(450, 130, 80, 130, width=2)
-        self.model_cns.create_line(80, 130, 80, 60, width=2, arrow='last', arrowshape='5 10 5')
-        self.model_cns.create_text(80, 55, text='-')
-        self.model_cns.create_text(75, 50, text='+')
-        self.model_cns.create_text(40, 35, text='g(t)')
-        self.model_cns.create_text(100, 35, text='e(t)')
-        self.model_cns.create_text(195, 35, text='u(t)')
-        self.model_cns.create_text(435, 35, text='y(t)')
+        # Modeling tab
+        self.redraw_model()
