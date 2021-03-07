@@ -200,6 +200,10 @@ class main_window():
         # Controller tab
         self.txt_controller = scrolledtext.ScrolledText(self.tab_controller, width=45, height=20)
         self.txt_controller.grid(row=0, column=0, sticky='we', padx=10, pady=10)
+        f = open('controller.py', 'r')
+        tmp = f.read()
+        self.txt_controller.insert(tk.END, tmp)
+        f.close()
         self.btn_save_controller = tk.Button(self.tab_controller, text='Save')
         self.btn_save_controller.grid(row=1, column=0, sticky='we', padx=10)
         self.btn_reset_controller = tk.Button(self.tab_controller, text='Reset')
@@ -208,6 +212,10 @@ class main_window():
         # Plant tab
         self.txt_plant = scrolledtext.ScrolledText(self.tab_plant, width=45, height=20)
         self.txt_plant.grid(row=0, column=0, sticky='we', padx=10, pady=10)
+        f = open('plant.py', 'r')
+        tmp = f.read()
+        self.txt_plant.insert(tk.END, tmp)
+        f.close()
         self.btn_save_plant = tk.Button(self.tab_plant, text='Save')
         self.btn_save_plant.grid(row=1, column=0, sticky='we', padx=10)
         self.btn_reset_plant = tk.Button(self.tab_plant, text='Reset')
@@ -216,6 +224,10 @@ class main_window():
         # Input tab
         self.txt_input = scrolledtext.ScrolledText(self.tab_input, width=45, height=20)
         self.txt_input.grid(row=0, column=0, sticky='we', padx=10, pady=10)
+        f = open('input.py', 'r')
+        tmp = f.read()
+        self.txt_input.insert(tk.END, tmp)
+        f.close()
         self.btn_save_input = tk.Button(self.tab_input, text='Save')
         self.btn_save_input.grid(row=1, column=0, sticky='we', padx=10)
         self.btn_reset_input = tk.Button(self.tab_input, text='Reset')
